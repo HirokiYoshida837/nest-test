@@ -1,3 +1,7 @@
+import { ValidationPipe } from '@nestjs/common'
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+
 export default () => ({
   database: {
     host: process.env.DATABASE_HOST || 'localhost',
@@ -7,3 +11,11 @@ export default () => ({
     name: process.env.database || 'test',
   },
 });
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe())
+  await app.listen(3000);
+}
+bootstrap();
+
